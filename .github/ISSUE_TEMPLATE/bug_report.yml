@@ -1,0 +1,32 @@
+name: 버그 제보
+description: 화면·날짜·지점 선택 등의 문제를 알려 주세요.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: 이 앱은 모의 데이터 데모입니다. 실제 조석과의 차이는 현재의 알려진 한계이며, 키·토큰 같은 비밀 정보는 첨부하지 마세요.
+  - type: textarea
+    id: steps
+    attributes:
+      label: 재현 단계
+      description: 선택한 지점과 날짜, 누른 버튼을 포함해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 기대 결과
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 실제 결과
+      description: 가능하면 화면이나 콘솔 오류를 함께 적어 주세요.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 사용 환경
+      placeholder: Windows / Chrome / 데스크톱 또는 Android / Chrome / 모바일

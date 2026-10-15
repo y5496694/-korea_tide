@@ -1,0 +1,23 @@
+name: 기능 제안
+description: 개선하고 싶은 사용 흐름이나 기능을 제안해 주세요.
+title: "[Feature] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 해결하고 싶은 문제
+      description: 어느 화면에서 어떤 작업이 어려운지 설명해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 원하는 동작
+      description: 구체적인 사용 예를 적어 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: 참고 자료
+      description: 데이터 연동 제안은 공식 문서와 이용 조건을 함께 알려 주세요.

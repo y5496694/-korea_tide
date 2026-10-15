@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>바다물때 라이브 | 한국 해양 조석 및 레저 예보</title>
+  <title>Korea Tide | 한국 연안 조석 시각화 데모</title>
+  <meta name="description" content="한국 연안 41개 지점의 모의 조석 곡선과 물때, 7일 시각표를 탐색하는 정적 웹 데모입니다. 실제 관측·안전 판단용 데이터가 아닙니다.">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Phosphor Icons -->
@@ -86,17 +87,17 @@
         </div>
         <div>
           <h1 class="text-lg font-bold leading-tight flex items-center gap-1.5">
-            바다물때 라이브
+            바다물때 데모
             <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-ocean-100 dark:bg-ocean-900/50 text-ocean-700 dark:text-ocean-300 border border-ocean-200 dark:border-ocean-800">Korea Tide</span>
           </h1>
-          <p class="text-xs text-slate-500 dark:text-slate-400">전국 42개 관측소 조석·해양레저 예보</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">전국 <span data-station-count>41</span>개 지점 · 모의 조석 시각화</p>
         </div>
       </div>
 
       <!-- Quick Action Buttons -->
       <div class="flex items-center gap-2">
         <button id="mcpModalBtn" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-ocean-300 dark:border-ocean-700 bg-ocean-50 dark:bg-ocean-950 text-ocean-700 dark:text-ocean-300 hover:bg-ocean-100 transition shadow-sm" title="MCP 원격 서버 상태 및 설정">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="w-2 h-2 rounded-full bg-slate-400"></span>
           <i class="ph ph-cpu"></i>
           <span class="hidden sm:inline">MCP 서버</span>
         </button>
@@ -110,18 +111,15 @@
 
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-    <!-- Top Alert Banner: Danger / Safety Guide -->
-    <div id="safetyBanner" class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-start sm:items-center justify-between gap-3 text-amber-800 dark:text-amber-200 text-sm">
+    <!-- Keep the data origin visible while exploring the demo. -->
+    <div id="safetyBanner" role="note" class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-start sm:items-center justify-between gap-3 text-amber-800 dark:text-amber-200 text-sm">
       <div class="flex items-center gap-3">
         <i class="ph-fill ph-warning-circle text-2xl text-amber-500 shrink-0"></i>
         <div>
-          <span class="font-bold mr-1">[해루질/갯벌 안전 가이드]</span>
-          <span>간조 2시간 전부터 진입 가능하며, <strong>간조 시각 도달 즉시 갯벌에서 반드시 철수</strong>하십시오. 밀물 속도는 성인 보행보다 빠릅니다.</span>
+          <span class="font-bold mr-1">[모의 데이터 데모]</span>
+          <span>조위·기상·레저 지수는 코드가 생성한 예시입니다. 실제 해양 활동이나 안전 판단에는 사용할 수 없습니다. 실제 조석 정보는 <a href="https://www.khoa.go.kr/" class="underline font-semibold">국립해양조사원</a>에서 확인하세요.</span>
         </div>
       </div>
-      <button onclick="document.getElementById('safetyBanner').style.display='none'" class="text-amber-500 hover:text-amber-700 dark:hover:text-amber-300 p-1">
-        <i class="ph ph-x text-lg"></i>
-      </button>
     </div>
 
     <section class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
@@ -129,7 +127,7 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
           <label class="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">해역 선택</label>
-          <div class="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" id="seaAreaButtons">
+          <div class="inline-flex flex-wrap rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" id="seaAreaButtons">
             <button data-area="all" class="area-btn active px-3.5 py-1.5 rounded-lg text-xs font-medium transition bg-white dark:bg-deep-900 text-ocean-600 dark:text-ocean-400 shadow-sm">전체</button>
             <button data-area="west" class="area-btn px-3.5 py-1.5 rounded-lg text-xs font-medium transition text-slate-600 dark:text-slate-400 hover:text-slate-900">서해안 (인천/보령/군산)</button>
             <button data-area="south" class="area-btn px-3.5 py-1.5 rounded-lg text-xs font-medium transition text-slate-600 dark:text-slate-400 hover:text-slate-900">남해안 (부산/여수/통영)</button>
@@ -188,7 +186,7 @@
               </h2>
             </div>
             <div class="text-right">
-              <div id="lunarInfo" class="text-xs font-medium text-slate-500 dark:text-slate-400">음력 8월 21일</div>
+              <div id="lunarInfo" class="text-xs font-medium text-slate-500 dark:text-slate-400">추정 월령 계산 중</div>
               <div id="tideCycleName" class="text-lg font-black text-ocean-600 dark:text-ocean-400">7물 (사리)</div>
             </div>
           </div>
@@ -197,7 +195,7 @@
           <div class="my-6 p-4 rounded-xl bg-gradient-to-br from-ocean-500/10 via-cyan-500/5 to-transparent border border-ocean-200 dark:border-ocean-800/60">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">현재 실시간 추정 조위</p>
+                <p id="currentLevelLabel" class="text-xs text-slate-500 dark:text-slate-400 font-medium">선택일 모의 조위 (KST)</p>
                 <div class="flex items-baseline gap-2 mt-1">
                   <span id="currentLevel" class="text-4xl font-black text-slate-900 dark:text-white tracking-tight">562</span>
                   <span class="text-sm font-semibold text-slate-500">cm</span>
@@ -228,7 +226,7 @@
                 <i class="ph-bold ph-thermometer text-xl"></i>
               </div>
               <div>
-                <span class="text-slate-400 block text-[11px]">수온</span>
+                <span class="text-slate-400 block text-[11px]">수온 (모의)</span>
                 <span id="seaTemp" class="font-bold text-sm text-slate-800 dark:text-slate-200">21.4 °C</span>
               </div>
             </div>
@@ -237,7 +235,7 @@
                 <i class="ph-bold ph-wind text-xl"></i>
               </div>
               <div>
-                <span class="text-slate-400 block text-[11px]">풍속 / 파고</span>
+                <span class="text-slate-400 block text-[11px]">풍속 / 파고 (모의)</span>
                 <span id="windWave" class="font-bold text-sm text-slate-800 dark:text-slate-200">3.8m/s · 0.8m</span>
               </div>
             </div>
@@ -248,11 +246,11 @@
         <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800">
           <div class="flex items-center justify-between text-xs mb-1">
             <span class="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-              <i class="ph-bold ph-timer text-amber-500"></i> 다음 안전 간조 알림
+              <i class="ph-bold ph-timer text-amber-500"></i> 간조 시각 예시
             </span>
             <span id="nextLowTideRemaining" class="font-extrabold text-ocean-600 dark:text-ocean-400">02시간 40분 남음</span>
           </div>
-          <p class="text-[11px] text-slate-500 dark:text-slate-400">다음 간조: <span id="nextLowTideTimeText" class="font-semibold text-slate-700 dark:text-slate-300">14:28 (145cm)</span></p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">모의 간조 · 화면 갱신 기준: <span id="nextLowTideTimeText" class="font-semibold text-slate-700 dark:text-slate-300">계산 중</span></p>
         </div>
       </section>
 
@@ -264,7 +262,7 @@
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
               <i class="ph-bold ph-arrows-clockwise text-ocean-500"></i>
-              금일 만조 & 간조 시각표
+              선택일 만조 & 간조 시각표 (모의)
             </h3>
             <span class="text-xs text-slate-400">단위: 시간 (한국표준시 KST) / 조위 (cm)</span>
           </div>
@@ -282,7 +280,7 @@
             </div>
             <div class="flex items-center gap-3 text-xs text-slate-500">
               <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-ocean-500 inline-block"></span> 조위(cm)</span>
-              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> 현재 시각</span>
+              <span>30분 간격 · 모의 데이터</span>
             </div>
           </div>
 
@@ -298,9 +296,9 @@
       <div class="flex items-center justify-between">
         <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <i class="ph-bold ph-compass text-ocean-500"></i>
-          물때별 해양 레저 지수 & 맞춤 가이드
+          물때별 해양 레저 가이드 (규칙 기반 예시)
         </h3>
-        <span class="text-xs text-slate-500 dark:text-slate-400">오늘의 물때(<span id="guideTideCycle">7물</span>) 기준 분석</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">선택일 물때(<span id="guideTideCycle">7물</span>) 예시</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="leisureCards">
@@ -389,7 +387,7 @@
             <i class="ph-bold ph-calendar-dots text-ocean-500"></i>
             주간 물때 예보 & 달의 위상 (7-Day Tide Table)
           </h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400">선택 관측소의 향후 7일간 음력, 물때 차수 및 만조·간조 예측치</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">선택일부터 7일간 추정 월령, 물때 차수 및 만조·간조 모의 값</p>
         </div>
         <div class="text-xs text-slate-400 hidden sm:block">
           * 사리: 보름/그믐 | 조금: 상현/하현
@@ -397,11 +395,11 @@
       </div>
 
       <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs border-collapse">
+        <table class="w-full min-w-[48rem] text-left text-xs border-collapse whitespace-nowrap">
           <thead>
             <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold bg-slate-50/50 dark:bg-slate-800/30">
               <th class="py-3 px-3">날짜 / 요일</th>
-              <th class="py-3 px-3">음력</th>
+              <th class="py-3 px-3">추정 월령</th>
               <th class="py-3 px-3">물때 (서해 7물 / 동·남해 8물)</th>
               <th class="py-3 px-3">만조 1회 (cm)</th>
               <th class="py-3 px-3">간조 1회 (cm)</th>
@@ -418,10 +416,10 @@
     </section>
 
     <section class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="flex items-center justify-between mb-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
         <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
           <i class="ph-bold ph-globe-hemisphere-east text-ocean-500"></i>
-          전국 주요 조석 관측소 바로가기 (42개소)
+          <span>전국 조석 지점 바로가기 (<span data-station-count>41</span>개소)</span>
         </h3>
         <span class="text-xs text-slate-400">원하는 지역을 클릭하면 바로 이동합니다</span>
       </div>
@@ -437,7 +435,7 @@
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-2">
         <i class="ph-bold ph-shield-check text-ocean-500 text-base"></i>
-        <span>조석 데이터 출처: 대한민국 국립해양조사원(KHOA) 기반 천문조석 예측 모델 & Ocean MCP</span>
+        <span>데이터: 로컬 시뮬레이션 · 국립해양조사원 관측 데이터 미연동</span>
       </div>
       <div>
         <span>MCP Endpoint: <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[11px] font-mono">korea-ocean-mcp.picks-site.workers.dev</code></span>
@@ -451,7 +449,7 @@
       <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/40">
         <div class="flex items-center gap-2">
           <i class="ph-bold ph-cpu text-ocean-500 text-xl"></i>
-          <h3 class="font-bold text-slate-900 dark:text-white">Korea Ocean MCP 연결 및 디버거</h3>
+          <h3 class="font-bold text-slate-900 dark:text-white">MCP 요청 진단 및 모의 응답</h3>
         </div>
         <button id="closeMcpModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
           <i class="ph ph-x text-xl"></i>
@@ -468,26 +466,26 @@
               <i class="ph ph-lightning"></i> 연결 테스트
             </button>
           </div>
-          <p class="text-[11px] text-slate-400 mt-1">Remote Model Context Protocol (JSON-RPC 2.0) 규격을 따르는 한국 해양 및 날씨 데이터 서버입니다.</p>
+          <p class="text-[11px] text-slate-400 mt-1">입력한 URL에 tools/list를 POST하는 간이 진단입니다. MCP 초기화·인증·SSE는 지원하지 않으며, 응답은 대시보드 데이터에 반영되지 않습니다.</p>
         </div>
 
         <!-- Connection Status -->
         <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-xs space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="text-slate-500">연결 상태:</span>
-            <span id="mcpStatusBadge" class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 정상 연결 대기 중
+            <span id="mcpStatusBadge" class="font-bold text-slate-500 flex items-center gap-1" role="status">
+              <span class="w-2 h-2 rounded-full bg-slate-400"></span> 미검사 · 모의 데이터 사용 중
             </span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-slate-500">제공 도구 (Tools):</span>
-            <span class="font-mono text-slate-700 dark:text-slate-300">8 ocean & weather tools</span>
+            <span class="text-slate-500">모의 응답 예시:</span>
+            <span class="font-mono text-slate-700 dark:text-slate-300">4 tool examples (local only)</span>
           </div>
         </div>
 
         <!-- Tool Runner -->
         <div>
-          <label class="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">도구 직접 호출 테스트 (tools/call)</label>
+          <label class="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">모의 tools/call 응답 보기 (네트워크 요청 없음)</label>
           <div class="grid grid-cols-2 gap-2 mb-2">
             <button class="mcp-quick-call px-3 py-2 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-ocean-50 dark:hover:bg-ocean-950 text-left" data-method="get_tide_forecast">
               🌊 get_tide_forecast
@@ -524,7 +522,7 @@
   </div>
 
   <script>
-    // 42 Major Korean Coastal Stations with coordinates, regional tide characteristics, and base harmonic parameters
+    // Demo locations with illustrative values, not official station IDs or measurements.
     const STATIONS = [
       // 서해안 (West Sea - High tidal range 6~9m)
       { id: 'incheon', name: '인천', en: 'Incheon', region: 'west', maxTide: 890, minTide: 110, tempBase: 21.2, windBase: 4.2 },
@@ -576,13 +574,26 @@
       { id: 'moseulpo', name: '모슬포', en: 'Moseulpo', region: 'jeju', maxTide: 275, minTide: 45, tempBase: 24.5, windBase: 4.8 }
     ];
 
-    // Korean 7-Mul (West Sea) and 8-Mul (South/East Sea) calculation from lunar day
+    function formatDateInput(date) {
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${date.getFullYear()}-${month}-${day}`;
+    }
+
+    function getKstNow(now = new Date()) {
+      const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+      return {
+        dateString: kst.toISOString().slice(0, 10),
+        hour: kst.getUTCHours() + kst.getUTCMinutes() / 60
+      };
+    }
+
+    // A rough lunar-age approximation for the demo, not a lunar-calendar conversion.
     function getLunarDay(date) {
-      // High-precision lunar age approximation based on known synodic cycle
       const baseNewMoon = new Date('2024-01-11T11:57:00Z').getTime();
       const synodicMonth = 29.53058867 * 24 * 60 * 60 * 1000;
-      const diff = date.getTime() - baseNewMoon;
-      const phase = (diff % synodicMonth) / synodicMonth;
+      const diff = new Date(`${formatDateInput(date)}T00:00:00+09:00`).getTime() - baseNewMoon;
+      const phase = ((diff % synodicMonth) + synodicMonth) % synodicMonth / synodicMonth;
       const lunarAge = (phase * 29.53058867);
       const lunarDay = Math.floor(lunarAge) + 1;
       return { lunarDay: lunarDay > 30 ? 1 : lunarDay, lunarAge: lunarAge };
@@ -633,7 +644,6 @@
 
       return {
         lunarDay,
-        lunarMonth: 8, // Approximate season
         mul,
         title,
         isSpringTide,
@@ -644,7 +654,6 @@
 
     function calculateTideEvents(station, date) {
       const tideInfo = getKoreanTideInfo(date, station.region);
-      const baseRange = station.maxTide - station.minTide;
 
       // Amplitude coefficient based on lunar cycle: Max at Full/New moon (사리), Min at Quarters (조금)
       // Range factor between 0.55 (조금) to 1.05 (대조기/사리)
@@ -698,7 +707,7 @@
       };
     }
 
-    // Continuous 24-Hour Curve Simulation with M2 + S2 harmonic approximation
+    // Illustrative cosine curve with a fixed 12.42-hour period and minor distortion.
     function generateCurveData(station, date, tideData) {
       const labels = [];
       const levels = [];
@@ -720,7 +729,8 @@
     }
 
     let currentStation = STATIONS[0];
-    let selectedDate = new Date();
+    let selectedDate = new Date(getKstNow().dateString + 'T00:00:00');
+    let currentArea = 'all';
     let tideChartInstance = null;
 
     // DOM Elements
@@ -787,7 +797,7 @@
 
       // Quick buttons in bottom section
       stationQuickButtons.innerHTML = '';
-      STATIONS.slice(0, 18).forEach(st => {
+      STATIONS.forEach(st => {
         const btn = document.createElement('button');
         const isActive = st.id === currentStation.id;
         btn.className = `p-2 rounded-xl text-left border text-xs font-medium transition ${
@@ -807,6 +817,9 @@
       const found = STATIONS.find(s => s.id === id);
       if (found) {
         currentStation = found;
+        if (currentArea !== 'all' && currentArea !== found.region) {
+          document.querySelector('.area-btn[data-area="all"]').click();
+        }
         stationSelect.value = id;
         renderAll();
       }
@@ -936,7 +949,7 @@
         mudflatScoreBadge.className = 'text-xs px-2 py-0.5 rounded-full font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
         mudflatAdvice.textContent = '동·남해는 조석 간만의 차가 작아 갯벌보다는 해안가 보말/고둥 채집에 적합합니다.';
       }
-      mudflatTime.textContent = `${primeLow.timeStr} 전후 2시간 (퇴실 절대엄수)`;
+      mudflatTime.textContent = `모의 간조 ${primeLow.timeStr} · 진입·철수 기준 아님`;
 
       // 3. 서핑
       if (station.region === 'east') {
@@ -973,7 +986,7 @@
       const tideData = calculateTideEvents(currentStation, selectedDate);
       const { events, tideInfo, highVal, lowVal } = tideData;
 
-      lunarInfo.textContent = `음력 ${tideInfo.lunarMonth}월 ${tideInfo.lunarDay}일`;
+      lunarInfo.textContent = `추정 월령 ${tideInfo.lunarAge.toFixed(1)}일`;
       tideCycleName.textContent = tideInfo.title;
       guideTideCycle.textContent = tideInfo.title;
 
@@ -1014,20 +1027,23 @@
           </div>
           <div class="text-[11px] text-slate-400 border-t border-slate-200/60 dark:border-slate-800 pt-2 flex items-center justify-between">
             <span>${isH ? '만조 정점' : '간조(바닥)'}</span>
-            <span>${isH ? '물 가득 참' : '해루질 골든'}</span>
+            <span>모의 데이터</span>
           </div>
         `;
         tideCardsContainer.appendChild(card);
       });
 
       // 4. Current real-time simulation logic
-      const now = new Date();
-      const nowHour = now.getHours() + now.getMinutes() / 60;
+      const now = getKstNow();
+      const nowHour = now.hour;
+      const isToday = formatDateInput(selectedDate) === now.dateString;
+      const clockText = `${String(Math.floor(nowHour)).padStart(2, '0')}:${String(Math.round(nowHour * 60) % 60).padStart(2, '0')}`;
+      document.getElementById('currentLevelLabel').textContent = `선택일 ${clockText} KST 모의 조위`;
       const curveData = generateCurveData(currentStation, selectedDate, tideData);
 
       // Find current level on curve
       const hourIndex = Math.min(Math.floor(nowHour * 2), curveData.levels.length - 1);
-      const estCurrentLevel = curveData.levels[hourIndex] || Math.round((highVal + lowVal) / 2);
+      const estCurrentLevel = curveData.levels[hourIndex] ?? Math.round((highVal + lowVal) / 2);
       currentLevel.textContent = estCurrentLevel;
 
       // Progress bar percentage
@@ -1046,15 +1062,26 @@
       }
 
       // Next Low Tide calculation
-      const futureLow = events.find(e => !e.isHigh && e.timeVal > nowHour) || events.find(e => !e.isHigh);
-      if (futureLow) {
-        let diffHrs = futureLow.timeVal - nowHour;
-        if (diffHrs < 0) diffHrs += 24;
+      let futureLow = events.find(e => !e.isHigh && e.timeVal > nowHour);
+      let dayOffset = 0;
+      if (isToday && !futureLow) {
+        const tomorrow = new Date(selectedDate);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        futureLow = calculateTideEvents(currentStation, tomorrow).events.find(e => !e.isHigh);
+        dayOffset = 1;
+      }
+      if (!isToday) {
+        futureLow = events.find(e => !e.isHigh);
+        nextLowTideRemaining.textContent = '선택일 시각 예시';
+      } else if (futureLow) {
+        const diffHrs = futureLow.timeVal + dayOffset * 24 - nowHour;
         const h = Math.floor(diffHrs);
         const m = Math.floor((diffHrs % 1) * 60);
         nextLowTideRemaining.textContent = `${String(h).padStart(2, '0')}시간 ${String(m).padStart(2, '0')}분 후`;
-        nextLowTideTimeText.textContent = `${futureLow.timeStr} (${futureLow.level}cm)`;
       }
+      nextLowTideTimeText.textContent = futureLow
+        ? `${dayOffset ? '내일 ' : ''}${futureLow.timeStr} (${futureLow.level}cm)`
+        : '선택일 간조 없음';
 
       // 5. Render Chart
       renderTideChart(curveData, hourIndex, estCurrentLevel);
@@ -1108,7 +1135,7 @@
             <span class="${isWeekend}">${month}.${day} (${dayOfWeek})</span>
             ${i === 0 ? '<span class="ml-1 text-[10px] bg-ocean-100 dark:bg-ocean-900 text-ocean-700 dark:text-ocean-300 px-1.5 py-0.5 rounded">기준일</span>' : ''}
           </td>
-          <td class="py-3 px-3 text-slate-500 dark:text-slate-400">8.${dData.tideInfo.lunarDay}</td>
+          <td class="py-3 px-3 text-slate-500 dark:text-slate-400">${dData.tideInfo.lunarAge.toFixed(1)}일</td>
           <td class="py-3 px-3 font-semibold ${dData.tideInfo.isSpringTide ? 'text-rose-600 dark:text-rose-400' : ''}">
             ${dData.tideInfo.title}
           </td>
@@ -1125,7 +1152,7 @@
 
         tr.onclick = () => {
           selectedDate = new Date(d);
-          dateInput.value = selectedDate.toISOString().split('T')[0];
+          dateInput.value = formatDateInput(selectedDate);
           renderAll();
         };
 
@@ -1134,12 +1161,18 @@
     }
 
     async function testMcpConnection(endpointUrl) {
+      if (testMcpBtn.disabled) return;
+      testMcpBtn.disabled = true;
       mcpStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span> 연결 시도 중...`;
-      mcpLogArea.textContent = `[MCP Client] Connecting to remote endpoint:\n> ${endpointUrl}\nProtocol: JSON-RPC 2.0 (Model Context Protocol)\n\nSending: {"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}`;
+      mcpLogArea.textContent = `[간이 JSON-RPC 진단 · MCP 초기화 미지원]\n> ${endpointUrl}\nSending: {"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}`;
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 6000);
+        const endpoint = new URL(endpointUrl);
+        if (!['https:', 'http:'].includes(endpoint.protocol)) {
+          throw new Error('http 또는 https URL을 입력하세요.');
+        }
 
         const response = await fetch(endpointUrl, {
           method: 'POST',
@@ -1149,40 +1182,30 @@
           },
           body: JSON.stringify({
             jsonrpc: "2.0",
-            id: Date.now(),
+            id: 1,
             method: "tools/list",
             params: {}
           }),
           signal: controller.signal
         });
 
-        clearTimeout(timeoutId);
-
         if (response.ok) {
           const data = await response.json();
-          mcpStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> 정상 연결 (Live Connected)`;
-          mcpLogArea.textContent = `[MCP Server Success 200 OK]\n` + JSON.stringify(data, null, 2);
+          if (data?.error) throw new Error(data.error.message || 'JSON-RPC 오류 응답');
+          if (data?.jsonrpc !== '2.0' || data.id !== 1 || !Array.isArray(data.result?.tools)) {
+            throw new Error('유효한 JSON-RPC tools/list 응답이 아닙니다.');
+          }
+          mcpStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> tools/list 응답 수신 · 모의 데이터 유지`;
+          mcpLogArea.textContent = `[tools/list 응답 · 대시보드 미연동]\n` + JSON.stringify(data, null, 2);
         } else {
           throw new Error(`Server returned HTTP ${response.status} ${response.statusText}`);
         }
       } catch (err) {
-        // Handled cleanly with offline fallback & explanation
-        mcpStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-ocean-500"></span> 로컬 시뮬레이션 엔진 활성 (CORS 안심 모드)`;
-        mcpLogArea.textContent = `[MCP Handshake Note]\n원격 MCP 서버(${endpointUrl})와의 브라우저 직접 fetch 연결 시 CORS 제한 또는 SSE 스트리밍 핸드셰이크 설정에 따라 다음과 같이 대체됩니다:\n\n` +
-          `오류 내용: ${err.message}\n` +
-          `✅ 시스템 자동 조치: 자체 내장 대한민국 천문조석 예측 엔진(Harmonic Tide Engine)으로 실시간 전환되어 42개 전 관측소의 조석표, 물때 계산, 해루질 안전 타이머가 100% 정상 작동합니다.\n\n` +
-          `[모의 tools/call 결과]\n` +
-          JSON.stringify({
-            tool: "get_tide_forecast",
-            station: currentStation.name,
-            region: currentStation.region,
-            forecast: {
-              lunar: "음력 8월 21일",
-              cycle: "7물 (사리)",
-              safety_status: "간조 2시간 전 갯벌 진입 허용, 만조 시각 도달 전 퇴실 필수",
-              data_origin: "Korea Ocean MCP Service"
-            }
-          }, null, 2);
+        mcpStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span> 진단 실패 · 모의 데이터 유지`;
+        mcpLogArea.textContent = `[진단 실패]\n${err.message}\n\n네트워크·CORS·인증·MCP 초기화 또는 응답 형식을 확인하세요. 이 진단의 성공 여부와 관계없이 화면은 로컬 모의 데이터를 표시합니다.`;
+      } finally {
+        clearTimeout(timeoutId);
+        testMcpBtn.disabled = false;
       }
     }
 
@@ -1198,6 +1221,7 @@
       btn.classList.remove('text-slate-600', 'dark:text-slate-400');
 
       const area = btn.getAttribute('data-area');
+      currentArea = area;
       populateStationDropdown(area);
       // Select first station of the region if current is outside
       if (area !== 'all' && currentStation.region !== area) {
@@ -1225,8 +1249,8 @@
 
     // Today Button
     todayBtn.addEventListener('click', () => {
-      selectedDate = new Date();
-      dateInput.value = selectedDate.toISOString().split('T')[0];
+      selectedDate = new Date(getKstNow().dateString + 'T00:00:00');
+      dateInput.value = formatDateInput(selectedDate);
       renderAll();
     });
 
@@ -1251,11 +1275,12 @@
     document.querySelectorAll('.mcp-quick-call').forEach(btn => {
       btn.addEventListener('click', () => {
         const method = btn.getAttribute('data-method');
-        mcpLogArea.textContent = `[tools/call Request]\n> Tool: ${method}\n> Station: ${currentStation.name} (${currentStation.id})\n> Date: ${selectedDate.toISOString().split('T')[0]}\n\nProcessing...`;
+        mcpLogArea.textContent = `[모의 tools/call · 네트워크 요청 없음]\n> Tool: ${method}\n> Station: ${currentStation.name} (${currentStation.id})\n> Date: ${formatDateInput(selectedDate)}\n\n로컬 예시 생성 중...`;
 
         setTimeout(() => {
-          mcpLogArea.textContent = `[tools/call Response: ${method}]\n` + JSON.stringify({
-            status: "success",
+          mcpLogArea.textContent = `[모의 tools/call Response: ${method}]\n` + JSON.stringify({
+            status: "demo",
+            data_origin: "local-simulation",
             tool_name: method,
             station_id: currentStation.id,
             station_korean: currentStation.name,
@@ -1263,7 +1288,7 @@
             content: [
               {
                 type: "text",
-                text: `${currentStation.name} 관측소 ${selectedDate.toISOString().split('T')[0]} 기준 데이터 조회 완료. 음력 물때: ${getKoreanTideInfo(selectedDate, currentStation.region).title}`
+                text: `${currentStation.name} ${formatDateInput(selectedDate)} 모의 데이터. 물때 예시: ${getKoreanTideInfo(selectedDate, currentStation.region).title}`
               }
             ]
           }, null, 2);
@@ -1280,18 +1305,16 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       // Set today's date in input
-      const todayIso = new Date().toISOString().split('T')[0];
+      const todayIso = getKstNow().dateString;
       dateInput.value = todayIso;
       dateInput.min = "2024-01-01";
       dateInput.max = "2030-12-31";
 
       populateStationDropdown('all');
+      document.querySelectorAll('[data-station-count]').forEach(el => {
+        el.textContent = STATIONS.length;
+      });
       renderAll();
-
-      // Silent initial ping to MCP server
-      setTimeout(() => {
-        testMcpConnection('https://korea-ocean-mcp.picks-site.workers.dev/mcp');
-      }, 1000);
     });
   </script>
 </body>
